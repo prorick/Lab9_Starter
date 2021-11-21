@@ -69,23 +69,31 @@
     </form>
 
     <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id="ConsLog">Console Log</button>
+      <button id='ConsErr'>Console Error</button>
+      <button id='ConsCount'>Console Count</button>
+      <button id='ConsWarn'>Console Warn</button>
+      <button id='ConsAssert'>Console Assert</button>
+      <button id='ConsClear'>Console Clear</button>
+      <button id='ConsDir'>Console Dir</button>
+      <button id='ConsDirxml'>Console dirxml</button>
+      <button id='ConsGroupStart'>Console Group Start</button>
+      <button id='ConsGroupEnd'>Console Group End</button>
+      <button id='ConsTable'>Console Table</button>
+      <button id='StartTimer'>Start Timer</button>
+      <button id='EndTimer'>End Timer</button>
+      <button id='ConsoleTrace'>Console Trace</button>
+      <button id='TriggreGlobal'>Trigger a Global Error</button>
     </section>
   </main>
+
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "e8682f41dfcc497a9b334e0d19d04f01"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
 
   <script>
     let form = document.querySelector('form');
@@ -102,6 +110,150 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    const button1 = document.getElementById("ConsLog");
+    button1.addEventListener('click', function(){
+      console.log("Console Log Button has been clicked.")
+    });
+
+    const button2 = document.getElementById('ConsErr');
+    button2.addEventListener('click', function(){
+      console.error("Console Error Button has been clicked.")
+    });
+    const button3 = document.getElementById('ConsCount');
+    button3.addEventListener('click', function(){
+      console.count();
+    });
+    const button4 = document.getElementById('ConsWarn');
+    button4.addEventListener('click', function(){
+      console.warn("Console Warn Button has been'click.");
+    });
+    const button5 = document.getElementById('ConsAssert');
+    button5.addEventListener('click', function(){
+      const x = 2;
+      const y = 3;
+      const reason = 'x is expected to be greater than y';
+      console.assert(x > y, {x, y, reason});
+    });
+    const button6 = document.getElementById('ConsClear');
+    button6.addEventListener('click', function(){
+      console.clear();
+    });
+    const button7 = document.getElementById('ConsDir');
+    button7.addEventListener('click', function(){
+      console.dir(document.head);
+    });
+    const button8 = document.getElementById('ConsDirxml');
+    button8.addEventListener('click', function(){
+      console.dirxml(document)
+    });
+
+    const thelabel = 'My favorite numbers';
+    const button9 = document.getElementById('ConsGroupStart');
+    button9.addEventListener('click', function(){
+      console.group(thelabel);
+      console.info('1');
+      console.info('2');
+      console.info('7');
+      console.info('21');
+    });
+
+    const button10 = document.getElementById('ConsGroupEnd');
+    button10.addEventListener('click', function(){
+      console.groupEnd(thelabel);
+    });
+
+    const button11 = document.getElementById('ConsTable');
+    button11.addEventListener('click', function(){
+      console.table([
+        {
+          first: 'René',
+          last: 'Moore',
+        },
+        {
+          first: 'Waves',
+          last: 'Chiang',
+          snack: 'chips',
+        },
+        {
+          first: 'Jason',
+          last: 'Do',
+        }
+      ]);
+    });
+    const button12 = document.getElementById('StartTimer');
+    button12.addEventListener('click', function(){
+      console.time();
+    });
+    const button13 = document.getElementById('EndTimer');
+    button13.addEventListener('click', function(){
+      console.timeEnd();
+    });
+    const button14 = document.getElementById('ConsoleTrace');
+    button14.addEventListener('click', function(){
+      const first = () => { second(); };
+      const second = () => { third(); };
+      const third = () => { fourth(); };
+      const fourth = () => { console.trace(); };
+      first();
+    });
+    const button15 = document.getElementById('TriggreGlobal');
+    button15.addEventListener('click', function(){
+      //reassigning a constant triggers a global error
+      button14 = document.getElementById('EndTimer');
+    });
+
+    const calcButton = document.getElementById("calculate");
+    calcButton.addEventListener("click", function(){
+      try {
+        let firstNum = document.querySelector('#first-num').value;
+        alert(firstNum);
+        if(isNaN(firstNum)){
+          throw new SyntaxError("Invalid number");
+        }
+      } catch (err) {
+        alert( 'The value you entered is not a number' );
+      } finally {
+        alert( 'Calculate lets GO!' );
+      }
+    });
+
+    //step 4
+    class CalculatorError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "CalculatorError"; // (2)
+      }
+    }
+
+    calcButton.addEventListener("click", function(){
+      try {
+        let secondNum = document.querySelector('#second-num').value;
+        console.log(secondNum);
+        if(isNaN(secondNum)){
+          throw new CalculatorError("Invalid number");
+        }
+      } catch (err) {
+        console.log( 'The second value you entered is not a number' );
+      } finally {
+        console.log( 'FINALLY lets GO!' );
+      }
+    });
+
+    //step5
+    
+    window.onerror = (e) => {
+      console.log('Window Error', e)
+      //TrackJS.track(e);
+      TrackJS.track(e);
+    }
+    
+
+
+    
+
+
+
+
   </script>
 </body>
 
